@@ -11,3 +11,6 @@ https://github.com/WebDevSimplified/react-todo-list
 ```
 npm create vite@4.1.0
 ```
+deploy vite to github page using github action
+
+https://github.com/sitek94/vite-deploy-demo

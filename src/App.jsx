@@ -1,16 +1,27 @@
 import { useState } from "react";
 import "./styles.css";
 import { NewTodoForm } from "./NewTodoForm";
+import { TodoList } from "./TodoList";
 
 export default function App() {
   const [todos, setTodos] = useState([]);
 
-  function ToggleTodo(id, completed) {
+  function addTodo(title) {
+    setTodos((currentTodos) => {
+      return [
+        ...currentTodos,
+        { id: crypto.randomUUID(), title, completed: false },
+      ];
+    });
+  }
+
+  function toggleTodo(id, completed) {
     setTodos((currentTodos) => {
       return currentTodos.map((todo) => {
         if (todo.id === id) {
-          return [...todo, completed];
+          return { ...todo, completed };
         }
+
         return todo;
       });
     });
@@ -24,31 +35,10 @@ export default function App() {
 
   return (
     <>
-      <NewTodoForm />
+      <NewTodoForm onSubmit={addTodo} />
       <h1 className="header">Todo List</h1>
-      {todos.length === 0 && "No todos"}
-      <ul className="list">
-        {todos.map((todo) => {
-          return (
-            <li key={todo.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={(e) => ToggleTodo(todo.id, e.target.checked)}
-                />
-                {todo.title}
-              </label>
-              <button
-                onClick={() => deleteTodo(todo.id)}
-                className="btn btn-danger"
-              >
-                Delete
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+
+      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
     </>
   );
 }
